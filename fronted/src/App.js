@@ -1,14 +1,65 @@
+import React, { useState, useEffect } from "react";
 import Task from "./component/Task";
+import { Center, Box, CheckboxGroup, Text, flattenTokens } from "@chakra-ui/react";
 
 const App = () => {
+  const initialTasks = [
+    {
+      name: "買い物",
+      isDone: true,
+    },
+    {
+      name: "料理",
+      isDone: false,
+    },
+    {
+      name: "片付け",
+      isDone: false,
+    },
+    {
+      name: "洗濯",
+      isDone: false,
+    },
+  ];
+
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    setTasks(initialTasks);
+  }, []);
+
+  const toggleIsDone = (index) => {
+    const tasksCopy = [...tasks];
+    const isDone = tasksCopy[index].isDone;
+    tasksCopy[index].isDone = !isDone;
+    setTasks(tasksCopy);
+  };
+
   return (
-    <>
-      <h1>タスク一覧</h1>
-      <Task name="買い物" />
-      <Task name="料理" />
-      <Task name="片付け" />
-      <Task name="洗濯" />
-    </>
+    <Box mt="64px">
+      <Center>
+        <Box>
+          <Box mb="24px">
+            <Text fontSize="24px" frontWeight="bold">
+              タスク一覧
+            </Text>
+          </Box>
+          <CheckboxGroup>
+            {tasks.map((task, index) => {
+              return (
+                <Task
+                  key={index}
+                  index={index}
+                  name={task.name}
+                  isDone={task.isDone}
+                  toggleIsDone={toggleIsDone}
+                />
+              );
+            })}
+          </CheckboxGroup>
+        </Box>
+      </Center>
+    </Box>
   );
 }
 
